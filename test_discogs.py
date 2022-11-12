@@ -100,12 +100,14 @@ class TestDiscogs(unittest.TestCase):
         self.assertEqual(len(results), self.max_per_page)
 
     def test_per_page_return_max_if_specified_exceeds_max(self):
-        per_page = self.max_per_page + 1
-        res = requests.get(f"{self.discog_url}/search?per_page={per_page}", headers=self.headers)
-        pagination = res.json()["pagination"]
-        results = res.json()["results"]
-        self.assertEqual(pagination["per_page"], self.max_per_page)
-        self.assertEqual(len(results), self.max_per_page)
+        for extra in [1, 50, 100]:
+            with self.subTest(extra=extra):
+                per_page = self.max_per_page + extra
+                res = requests.get(f"{self.discog_url}/search?per_page={per_page}", headers=self.headers)
+                pagination = res.json()["pagination"]
+                results = res.json()["results"]
+                self.assertEqual(pagination["per_page"], self.max_per_page)
+                self.assertEqual(len(results), self.max_per_page)
 
  
 if __name__ == '__main__':
