@@ -58,6 +58,13 @@ class TestDiscogs(unittest.TestCase):
             "Authorization": auth
             }
 
+    @unittest.skip('demo')        
+    def test_basic_response(self):
+        res = requests.get("{}/search".format(self.discog_url), headers=self.headers)
+ 
+        print(res.request)
+        print(res.json())
+
     def test_successful_search_when_authorized(self):
         res = requests.get("{}/search".format(self.discog_url), headers=self.headers)
         self.assertEqual(res.status_code, 200, 'status code = {}'.format(res.status_code))
